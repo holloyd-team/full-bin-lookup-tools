@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submission Detail</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <style>
+        body { margin:0;font-family:Arial,sans-serif;background:#f9f9f9;color:#333; }
+        header { background: {{ colors.primary_color }}; color:#fff; padding:1rem; display:flex; align-items:center; }
+        header h1 { flex:1; margin:0; text-align:center; }
+        .menu { cursor:pointer; font-size:1.5rem; }
+        nav { display:none; position:absolute; top:60px; left:10px; background:#fff; border:1px solid #ccc; }
+        nav a { display:block; padding:0.5rem 1rem; text-decoration:none; color:#333; }
+        main { display:flex; justify-content:center; padding:2rem; }
+        .container { width:100%; max-width:600px; }
+        form { display:flex; flex-direction:column; }
+        label { margin-top:0.5rem; font-weight:bold; }
+        input { padding:0.5rem; margin-bottom:0.5rem; font-size:1rem; }
+        button { padding:0.75rem; margin-top:0.5rem; background: {{ colors.secondary_color }}; color:#fff; border:none; cursor:pointer; }
+        button:hover { filter:brightness(0.9); }
+        .message { color:green; margin-bottom:1rem; }
+    </style>
+    <script>
+        function toggleMenu(){const nav=document.getElementById('nav');nav.style.display=nav.style.display==='block'?'none':'block';}
+    </script>
+</head>
+<body>
+<header>
+    <div class="menu" onclick="toggleMenu()">&#9776;</div>
+    <h1>Admin Panel</h1>
+    <a href="{{ url_for('admin.logout') }}" style="color:#fff;text-decoration:none;margin-left:1rem;">Logout</a>
+    <nav id="nav">
+        <a href="{{ url_for('admin.dashboard') }}">BIN Details</a>
+        <a href="{{ url_for('admin.submissions') }}">Submissions</a>
+    </nav>
+</header>
+<main>
+    <div class="container">
+        {% if message %}
+        <p class="message">{{ message }}</p>
+        {% endif %}
+        <form method="post">
+            <label for="category">Category</label>
+            <input type="text" name="category" id="category" value="{{ submission.category }}">
+            <label for="reloadable">Reloadable</label>
+            <input type="text" name="reloadable" id="reloadable" value="{{ submission.reloadable }}">
+            <label for="international">International</label>
+            <input type="text" name="international" id="international" value="{{ submission.international }}">
+            <label for="max_balance">Max Balance</label>
+            <input type="number" name="max_balance" id="max_balance" value="{{ submission.max_balance }}">
+            <label for="company">Company</label>
+            <input type="text" name="company" id="company" value="{{ submission.company }}">
+            <label for="country">Country</label>
+            <input type="text" name="country" id="country" value="{{ submission.country }}">
+            <label for="customer_service">Customer Service</label>
+            <input type="text" name="customer_service" id="customer_service" value="{{ submission.customer_service }}">
+            <label for="distributor">Distributor</label>
+            <input type="text" name="distributor" id="distributor" value="{{ submission.distributor }}">
+            <label for="issuer">Issuer</label>
+            <input type="text" name="issuer" id="issuer" value="{{ submission.issuer }}">
+            <label for="type">Type</label>
+            <input type="text" name="type" id="type" value="{{ submission.type }}">
+            <label for="website_url">Website URL</label>
+            <input type="text" name="website_url" id="website_url" value="{{ submission.website_url }}">
+            <button type="submit" name="action" value="update">Update</button>
+            <button type="submit" name="action" value="delete" onclick="return confirm('Delete this submission?');">Delete</button>
+        </form>
+    </div>
+</main>
+</body>
+</html>

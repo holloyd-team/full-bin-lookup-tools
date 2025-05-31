@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ site_name }}</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: {{ colors.primary_color }};
+            color: #fff;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        header h1 {
+            flex: 1;
+            margin: 0;
+            text-align: center;
+        }
+        .logo img {
+            height: 40px;
+        }
+        main {
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input[type="text"] {
+            padding: 0.5rem;
+            font-size: 1rem;
+        }
+        button {
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            background-color: {{ colors.secondary_color }};
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            filter: brightness(0.9);
+        }
+        .error {
+            color: red;
+            margin-bottom: 1rem;
+        }
+        .result {
+            margin-top: 2rem;
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            text-align: left;
+            padding: 0.5rem;
+            border-bottom: 1px solid #ddd;
+        }
+        .description {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .disclaimer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #666;
+            padding: 1rem 0;
+        }
+        .report-link {
+            text-align: center;
+            margin-top: 0.5rem;
+            font-size: 1.2rem;
+        }
+        .api-docs {
+            text-align: center;
+            font-size: 0.9rem;
+            padding: 1rem 0;
+        }
+        .button-link {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: {{ colors.primary_color }};
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        @media (max-width: 600px) {
+            main {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        {% if logo.enabled and logo.image_url %}
+        <div class="logo">
+            <a href="{{ logo.link_url }}"><img src="{{ logo.image_url }}" alt="Logo"></a>
+        </div>
+        {% endif %}
+        <h1>{{ site_name }}</h1>
+    </header>
+    <main>
+        <div class="container">
+            {% if error %}
+            <p class="error">{{ error }}</p>
+            {% endif %}
+            <form method="post">
+                <input type="text" name="bin" placeholder="Enter 6 digit BIN" pattern="\d{6}" required>
+                <button type="submit">Search</button>
+            </form>
+            {% if searched_bin %}
+            <div class="report-link">
+                <a href="{{ url_for('frontend.report', bin_code=searched_bin) }}" title="Report incorrect information">&#9998;</a>
+            </div>
+            {% endif %}
+            {% if bin_info %}
+            <div class="result">
+                <table>
+                    <tr><th>BIN</th><td>{{ bin_info.bin }}</td></tr>
+                    <tr><th>Category</th><td>{{ bin_info.category }}</td></tr>
+                    {% if bin_info.category|lower == 'prepaid' %}
+                    <tr><th>Reloadable</th><td>{{ bin_info.reloadable }}</td></tr>
+                    <tr><th>International</th><td>{{ bin_info.international }}</td></tr>
+                    <tr><th>Max Balance</th><td>{{ bin_info.max_balance }}</td></tr>
+                    <tr><th>Company</th><td>{{ bin_info.company }}</td></tr>
+                    {% endif %}
+                    <tr><th>Country</th><td>{{ bin_info.country }}</td></tr>
+                    <tr><th>Customer Service</th><td>{{ bin_info.customer_service }}</td></tr>
+                    <tr><th>Distributor</th><td>{{ bin_info.distributor }}</td></tr>
+                    <tr><th>Issuer</th><td>{{ bin_info.issuer }}</td></tr>
+                    <tr><th>Type</th><td>{{ bin_info.type }}</td></tr>
+                    <tr><th>Website URL</th>
+                        <td>
+                            {% if bin_info.website_url != 'Not Available' %}
+                            <a href="{{ bin_info.website_url }}">{{ bin_info.website_url }}</a>
+                            {% else %}
+                            {{ bin_info.website_url }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            {% endif %}
+            {% if description %}
+            <p class="description">{{ description }}</p>
+            {% endif %}
+        </div>
+    </main>
+    {% if disclaimer_enabled %}
+    <footer class="disclaimer">
+        <p>This database is not 100% accurate and data cannot be relied on and should always be double checked.</p>
+    </footer>
+    {% endif %}
+    <footer class="api-docs">
+        <p><a href="{{ url_for('frontend.api_docs') }}" class="button-link">API Documentation</a></p>
+    </footer>
+</body>
+</html>

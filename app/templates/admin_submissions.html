@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submissions</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: {{ colors.primary_color }};
+            color: #fff;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        header h1 {
+            flex: 1;
+            margin: 0;
+            text-align: center;
+        }
+        .menu {
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+        nav {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 10px;
+            background: #fff;
+            border: 1px solid #ccc;
+        }
+        nav a {
+            display: block;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            color: #333;
+        }
+        main {
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+        table {
+            width: 100%;
+            max-width: 600px;
+            border-collapse: collapse;
+        }
+        th, td {
+            text-align: left;
+            padding: 0.5rem;
+            border-bottom: 1px solid #ddd;
+        }
+        a.button {
+            color: {{ colors.secondary_color }};
+        }
+    </style>
+    <script>
+        function toggleMenu() {
+            const nav = document.getElementById('nav');
+            if (nav.style.display === 'block') {
+                nav.style.display = 'none';
+            } else {
+                nav.style.display = 'block';
+            }
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <div class="menu" onclick="toggleMenu()">&#9776;</div>
+        <h1>Admin Panel</h1>
+        <a href="{{ url_for('admin.logout') }}" style="color:#fff;text-decoration:none;margin-left:1rem;">Logout</a>
+        <nav id="nav">
+            <a href="{{ url_for('admin.dashboard') }}">BIN Details</a>
+            <a href="{{ url_for('admin.submissions') }}">Submissions</a>
+        </nav>
+    </header>
+    <main>
+        <table>
+            <tr><th>BIN</th><th>Action</th></tr>
+            {% for sub in submissions %}
+            <tr>
+                <td>{{ sub.bin }}</td>
+                <td><a class="button" href="{{ url_for('admin.view_submission', sub_id=sub.id) }}">View</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </main>
+</body>
+</html>

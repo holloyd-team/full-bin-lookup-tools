@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: {{ colors.primary_color }};
+            color: #fff;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        header h1 {
+            flex: 1;
+            margin: 0;
+            text-align: center;
+        }
+        .back-button {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-right: 1rem;
+        }
+        main {
+            padding: 1rem 2rem;
+            max-width: 800px;
+            margin: auto;
+        }
+        h2 {
+            margin-top: 2rem;
+        }
+        .method {
+            font-weight: bold;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: #fff;
+            display: inline-block;
+            min-width: 50px;
+            text-align: center;
+        }
+        .method-get {
+            background-color: #28a745;
+        }
+        .method-post {
+            background-color: #17a2b8;
+        }
+        pre {
+            background-color: #f0f0f0;
+            padding: 0.5rem;
+            overflow-x: auto;
+        }
+        section {
+            margin-bottom: 2rem;
+        }
+        @media (max-width: 600px) {
+            main {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('frontend.index') }}" class="back-button">&#8592; Back</a>
+        <h1>{{ site_name }} API</h1>
+    </header>
+    <main>
+        <p>Base URL: {{ domain }}</p>
+        <section>
+            <h2><span class="method method-get">GET</span> /api/bin/&lt;bin&gt;</h2>
+            <p>Retrieve BIN record by its first six digits.</p>
+            <h3>Example Request</h3>
+            <pre><code>curl {{ domain }}/api/bin/411810</code></pre>
+            <h3>Example Response</h3>
+            <pre><code>{
+  "bin": "411810",
+  "company": "Example Bank",
+  "country": "USA"
+}</code></pre>
+        </section>
+        <section>
+            <h2><span class="method method-post">POST</span> /api/report/&lt;bin&gt;</h2>
+            <p>Submit corrections for a BIN without authentication.</p>
+            <h3>Example Request</h3>
+            <pre><code>curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"country": "USA"}' \
+  {{ domain }}/api/report/411810</code></pre>
+            <h3>Example Response</h3>
+            <pre><code>{
+  "bin": "411810",
+  "country": "USA"
+}</code></pre>
+        </section>
+    </main>
+</body>
+</html>

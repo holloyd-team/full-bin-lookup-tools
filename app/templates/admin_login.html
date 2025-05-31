@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: {{ colors.primary_color }};
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+        main {
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input {
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        button {
+            padding: 0.75rem;
+            background-color: {{ colors.secondary_color }};
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            filter: brightness(0.9);
+        }
+        .error {
+            color: red;
+            margin-bottom: 1rem;
+        }
+        @media (max-width: 600px) {
+            main {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Admin Login</h1>
+    </header>
+    <main>
+        <div class="container">
+            {% if error %}
+            <p class="error">{{ error }}</p>
+            {% endif %}
+            <form method="post">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

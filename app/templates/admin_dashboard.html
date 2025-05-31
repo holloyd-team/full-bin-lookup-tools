@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: {{ colors.primary_color }};
+            color: #fff;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        header h1 {
+            flex: 1;
+            margin: 0;
+            text-align: center;
+        }
+        .menu { cursor: pointer; font-size: 1.5rem; }
+        nav {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 10px;
+            background: #fff;
+            border: 1px solid #ccc;
+        }
+        nav a { display: block; padding: 0.5rem 1rem; text-decoration: none; color: #333; }
+        header a.logout { color: #fff; text-decoration: none; margin-left: 1rem; font-size: 0.9rem; }
+        main {
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input, select {
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        button {
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            background-color: {{ colors.secondary_color }};
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            filter: brightness(0.9);
+        }
+        .message {
+            color: green;
+            margin-bottom: 1rem;
+        }
+        @media (max-width: 600px) {
+            main {
+                padding: 1rem;
+            }
+        }
+    </style>
+    <script>
+        function toggleMenu(){const nav=document.getElementById('nav');nav.style.display=nav.style.display==='block'?'none':'block';}
+    </script>
+</head>
+<body>
+    <header>
+        <div class="menu" onclick="toggleMenu()">&#9776;</div>
+        <h1>Admin Panel</h1>
+        <a href="{{ url_for('admin.logout') }}" class="logout">Logout</a>
+        <nav id="nav">
+            <a href="{{ url_for('admin.dashboard') }}">BIN Details</a>
+            <a href="{{ url_for('admin.submissions') }}">Submissions</a>
+        </nav>
+    </header>
+    <main>
+        <div class="container">
+            {% if message %}
+            <p class="message">{{ message }}</p>
+            {% endif %}
+            <form method="post">
+                <input type="hidden" name="action" value="search">
+                <input type="text" name="bin" placeholder="Enter 6 digit BIN" pattern="\d{6}" required>
+                <button type="submit">Search</button>
+            </form>
+            <hr>
+            <form method="post">
+                <input type="hidden" name="action" value="save">
+                <input type="text" name="bin" placeholder="BIN" pattern="\d{6}" required value="{{ record.bin if record }}">
+                <input type="text" name="category" placeholder="Category" value="{{ record.category if record }}">
+                <input type="text" name="reloadable" placeholder="Reloadable" value="{{ record.reloadable if record }}">
+                <input type="text" name="international" placeholder="International" value="{{ record.international if record }}">
+                <input type="number" name="max_balance" placeholder="Max Balance" value="{{ record.max_balance if record }}">
+                <input type="text" name="company" placeholder="Company" value="{{ record.company if record }}">
+                <input type="text" name="country" placeholder="Country" value="{{ record.country if record }}">
+                <input type="text" name="customer_service" placeholder="Customer Service" value="{{ record.customer_service if record }}">
+                <input type="text" name="distributor" placeholder="Distributor" value="{{ record.distributor if record }}">
+                <input type="text" name="issuer" placeholder="Issuer" value="{{ record.issuer if record }}">
+                <input type="text" name="type" placeholder="Type" value="{{ record.type if record }}">
+                <input type="text" name="website_url" placeholder="Website URL" value="{{ record.website_url if record }}">
+                <button type="submit">Save</button>
+            </form>
+            {% if record %}
+            <form method="post" onsubmit="return confirm('Delete this BIN?');">
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="bin" value="{{ record.bin }}">
+                <button type="submit">Delete</button>
+            </form>
+            {% endif %}
+        </div>
+    </main>
+</body>
+</html>

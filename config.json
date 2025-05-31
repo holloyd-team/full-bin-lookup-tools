@@ -1,0 +1,28 @@
+{
+  "telegram": {
+    "enabled": false,
+    "bot_token": "YOUR_TELEGRAM_BOT_TOKEN_HERE"
+  },
+  "api": {
+    "enabled": true,
+    "api_key": "YOUR_API_KEY_HERE"
+  },
+  "admin": {
+    "enabled": false,
+    "username": "admin",
+    "password": "AdminPassword123!@&"
+  },
+  "frontend": {
+    "primary_color": "#1E90FF",
+    "secondary_color": "#104E8B",
+    "site_name": "BIN Lookup Site",
+    "logo": {
+      "enabled": true,
+      "image_url": "https://cdn.prod.website-files.com/6365d860c7b7a7191055eb8a/66eeb030dcea757c29ff2ba7_45%2520Degrees.svg",
+      "link_url": "https://example.com"
+    },
+    "description": "A BIN (Bank Identification Number) is the first six digits of a payment card and instantly identifies the issuing bank, card type (debit, credit, or prepaid). When it is a prepaid card additional details such as reloadability, international usage, and maximum balance may be available. By entering any six-digit BIN into our lookup field, we show you information we have collected related to this card. Some data was sourced from the Holloyd Team, binlist.net, and ianuttall’s github repo binlist-data.",
+    "disclaimer_enabled": true
+  },
+  "custom_domain": ""
+}
